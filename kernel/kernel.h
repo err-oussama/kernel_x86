@@ -1,5 +1,5 @@
-#ifndef VGA_H
-# define VGA_H
+#ifndef KERNEL_H
+# define KERNEL_H
 
 # define VGA_BLACK 0x0
 # define VGA_BLUE 0x1
@@ -18,4 +18,5 @@
 # define VGA_YELLOW 0xE
 # define VGA_WHIE 0xF
 
+void	print(char *str, int fg, int bg);
 #endif

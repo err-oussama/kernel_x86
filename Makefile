@@ -1,12 +1,48 @@
-all:
-	nasm -f elf32 boot/boot.asm -o boot.o
-	gcc -m32 -ffreestanding -c kernel/kmain.c -o kmain.o
-	ld -m elf_i386 -T linker.ld -o kernel.bin boot.o kmain.o
+# Compiler / Assembler / Linker
+CC      := gcc
+ASM     := nasm
+LD      := ld
 
-run: all
+# Flags
+CFLAGS  := -m32 -ffreestanding -c
+ASFLAGS := -f elf32
+LDFLAGS := -m elf_i386 -T linker.ld
+
+# Files
+ASM_SRC := $(wildcard boot/*.asm)
+ASM_OBJ := $(ASM_SRC:.asm=.o)
+
+C_SRC   := $(wildcard kernel/*.c)
+C_OBJ   := $(C_SRC:.c=.o)
+
+TARGET  := kernel.bin
+
+# Default target
+all: $(TARGET)
+
+# Link everything
+$(TARGET): $(ASM_OBJ) $(C_OBJ)
+	$(LD) $(LDFLAGS) -o $@ $^
+
+# Compile C sources
+kernel/%.o: kernel/%.c
+	$(CC) $(CFLAGS) $< -o $@
+
+# Assemble ASM sources
+boot/%.o: boot/%.asm
+	$(ASM) $(ASFLAGS) $< -o $@
+
+
+# Running
+run: 
 	qemu-system-x86_64 -kernel kernel.bin
 
+# Clean
 clean:
-	rm -f *.o *.bin *.iso
+	rm -f $(ASM_OBJ) $(C_OBJ) $(TARGET)
+
+
+
+
 
 
