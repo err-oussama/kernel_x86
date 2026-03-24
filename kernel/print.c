@@ -40,3 +40,28 @@ void	print(char *str, int fg, int bg)
 		g_col++;
 	}
 }
+
+void	put_nbr(long n)
+{
+	char	buff[30];
+	int		i;
+	int		s;
+
+	i = 29;
+	buff[i] = 0;
+	if (n == 0)
+		return (print("0", VGA_LIGHT_BLUE, VGA_LIGHT_CYAN));
+	if (n < 0)
+	{
+		s = 1;
+		n = -n;
+	}
+	while (n > 0)
+	{
+		buff[--i] = (n % 10) + '0';
+		n /= 10;
+	}
+	if (s == 1)
+		buff[--i] = '-';
+	print(&buff[i], VGA_LIGHT_BLUE, VGA_LIGHT_CYAN);
+}

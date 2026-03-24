@@ -19,4 +19,5 @@
 # define VGA_WHIE 0xF
 
 void	print(char *str, int fg, int bg);
+void	put_nbr(long n);
 #endif
