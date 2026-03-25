@@ -4,7 +4,7 @@ ASM     := nasm
 LD      := ld
 
 # Flags
-CFLAGS  := -m32 -ffreestanding -c
+CFLAGS := -m32 -ffreestanding -fno-stack-protector -nostdlib -nostdinc -c
 ASFLAGS := -f elf32
 LDFLAGS := -m elf_i386 -T linker.ld
 

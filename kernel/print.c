@@ -65,3 +65,19 @@ void	put_nbr(long n)
 		buff[--i] = '-';
 	print(&buff[i], VGA_LIGHT_BLUE, VGA_LIGHT_CYAN);
 }
+
+void print_erro(char *str)
+{
+	print(str, VGA_BLACK, VGA_RED);
+}
+void print_warn(char *str)
+{
+	print(str, VGA_YELLOW, VGA_BLACK);
+}
+
+
+void print_info(char *str)
+{
+	print(str, VGA_WHITE, VGA_BLACK);
+}
+

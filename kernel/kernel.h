@@ -16,8 +16,12 @@
 # define VGA_LIGHT_RED 0xC
 # define VGA_LIGHT_MAGENTA 0xD
 # define VGA_YELLOW 0xE
-# define VGA_WHIE 0xF
+# define VGA_WHITE 0xF
 
 void	print(char *str, int fg, int bg);
 void	put_nbr(long n);
+
+void print_erro(char *str);
+void print_warn(char *str);
+void print_info(char *str);
 #endif
