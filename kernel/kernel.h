@@ -18,10 +18,42 @@
 # define VGA_YELLOW 0xE
 # define VGA_WHITE 0xF
 
-void	print(char *str, int fg, int bg);
-void	put_nbr(long n);
 
-void print_erro(char *str);
-void print_warn(char *str);
-void print_info(char *str);
+/*
+#############################################################
+# 					GDT 									#
+#############################################################
+*/ 
+typedef struct __attribute__((packed)){
+	unsigned short	limit_low;
+	unsigned short	base_low;
+	unsigned char	base_middle;
+	unsigned char	access_byte;
+	unsigned char	limi_high_and_flag;
+	unsigned char	base_address_high;
+}gdt;
+
+typedef struct __attribute__((packed)){
+	unsigned short limit;
+	unsigned int base;
+
+} gdt_addresses;
+
+void set_gdt(void *gdt_ptr);
+gdt_addresses *get_gdt(void *gdt_ptr);
+
+
+
+
+
+/*
+#############################################################
+# 					PRINT 									#
+#############################################################
+ */
+void 	put_nbr(long n);
+void 	print(char *str, int fg, int bg);
+void 	print_erro(char *str);
+void 	print_warn(char *str);
+void 	print_info(char *str);
 #endif
