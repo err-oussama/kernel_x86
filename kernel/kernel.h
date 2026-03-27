@@ -31,16 +31,15 @@ typedef struct __attribute__((packed)){
 	unsigned char	access_byte;
 	unsigned char	limi_high_and_flag;
 	unsigned char	base_address_high;
-}gdt;
+}segment_descriptor;
 
 typedef struct __attribute__((packed)){
 	unsigned short limit;
 	unsigned int base;
+} gdtr_v;
 
-} gdt_addresses;
-
-void set_gdt(void *gdt_ptr);
-gdt_addresses *get_gdt(void *gdt_ptr);
+void set_gdt(gdtr_v *gdt_ptr);
+gdtr_v *get_gdt();
 
 
 
