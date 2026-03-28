@@ -1,5 +1,4 @@
-# x86 Kernel — From First Principles
-
+# NullCore 
 A minimal x86 kernel built from scratch with the sole purpose of understanding **how a 
 machine actually executes code**, from the first instruction to hardware interaction.
 
