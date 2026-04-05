@@ -34,7 +34,7 @@ boot/%.o: boot/%.asm
 
 
 # Running
-run: 
+run: $(TARGET) 
 	qemu-system-x86_64 -kernel kernel.bin
 
 # Clean
