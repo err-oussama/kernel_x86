@@ -1,5 +1,6 @@
-extern set_gdt;
 
+global set_gdt;
+global get_gdt;
 
 set_gdt:
 	mov eax, [esp + 4];

@@ -29,13 +29,13 @@ typedef struct __attribute__((packed)){
 	unsigned short	base_low;
 	unsigned char	base_middle;
 	unsigned char	access_byte;
-	unsigned char	limi_high_and_flag;
+	unsigned char	limit_high_and_flag;
 	unsigned char	base_address_high;
 }segment_descriptor;
 
 typedef struct __attribute__((packed)){
-	unsigned short limit;
-	unsigned int base;
+	unsigned short limit; // size of the segment_descriptor vector
+	unsigned int base; // pointer to whre the segment_descriptor vector start;
 } gdtr_v;
 
 void set_gdt(gdtr_v *gdt_ptr);

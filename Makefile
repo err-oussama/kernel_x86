@@ -9,7 +9,7 @@ ASFLAGS := -f elf32
 LDFLAGS := -m elf_i386 -T linker.ld
 
 # Files
-ASM_SRC := $(wildcard boot/*.asm)
+ASM_SRC := $(wildcard boot/*.asm) $(wildcard kernel/*.asm)
 ASM_OBJ := $(ASM_SRC:.asm=.o)
 
 C_SRC   := $(wildcard kernel/*.c)
@@ -27,6 +27,9 @@ $(TARGET): $(ASM_OBJ) $(C_OBJ)
 # Compile C sources
 kernel/%.o: kernel/%.c
 	$(CC) $(CFLAGS) $< -o $@
+
+kernel/%.o: kernel/%.asm 
+	$(ASM) $(ASFLAGS) $< -o $@
 
 # Assemble ASM sources
 boot/%.o: boot/%.asm
