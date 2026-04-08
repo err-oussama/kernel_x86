@@ -22,7 +22,7 @@ void	put_char(char c, int fg, int bg, int row, int col)
 	vga[row * 80 + col] = ((bg << 4 | fg) << 8) | c;
 }
 
-void	print(char *str, int fg, int bg)
+void	put_str(char *str, int fg, int bg)
 {
 	while (*str)
 	{
@@ -36,9 +36,26 @@ void	print(char *str, int fg, int bg)
 				continue ;
 			}
 		}
-		put_char(*str++, fg, bg, g_row, g_col);
+		vga[g_row * 80 + g_col] = ((bg << 4 | fg) << 8) | *str++;
+		//put_char(*str++, fg, bg, g_row, g_col);
 		g_col++;
 	}
+}
+
+
+void printe(char *str)
+{
+	put_str(str, VGA_BLACK, VGA_RED);
+}
+void printw(char *str)
+{
+	put_str(str, VGA_YELLOW, VGA_BLACK);
+}
+
+
+void print(char *str)
+{
+	put_str(str, VGA_WHITE, VGA_BLACK);
 }
 
 void	put_nbr(long n)
@@ -50,7 +67,7 @@ void	put_nbr(long n)
 	i = 29;
 	buff[i] = 0;
 	if (n == 0)
-		return (print("0", VGA_LIGHT_BLUE, VGA_LIGHT_CYAN));
+		return (put_str("0", VGA_WHITE, VGA_BLACK));
 	if (n < 0)
 	{
 		s = 1;
@@ -63,21 +80,5 @@ void	put_nbr(long n)
 	}
 	if (s == 1)
 		buff[--i] = '-';
-	print(&buff[i], VGA_LIGHT_BLUE, VGA_LIGHT_CYAN);
+	put_str(&buff[i], VGA_WHITE, VGA_BLACK);
 }
-
-void print_erro(char *str)
-{
-	print(str, VGA_BLACK, VGA_RED);
-}
-void print_warn(char *str)
-{
-	print(str, VGA_YELLOW, VGA_BLACK);
-}
-
-
-void print_info(char *str)
-{
-	print(str, VGA_WHITE, VGA_BLACK);
-}
-

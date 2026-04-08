@@ -2,22 +2,24 @@
 
 void	kmain(void)
 {
-	print_erro("this is error\n");
-	print_warn("this is warnning\n");
-	print_info("this is info\n");
-	put_nbr(99);
-	print_info("\n");
-	put_nbr(-99);
-	segment_descriptor gdt_vector;
-	gdtr_v gdt;
-	gdt.base = (int) &gdt_vector;
+	gdt_entry f_gdt_entry; 
+	gdt_register gdt;
+	gdt_register test;
+
+	printe("This is Error\n");
+	printw("This is Warnning\n");
+	print("This is normal text\n");
+
+	gdt.base = 10000000;
 	gdt.limit = 10;
-	print_info("\n");
-	put_nbr((int)&gdt);
-	set_gdt(&gdt);
-	gdtr_v tst;
-	print_info("\n");
-	put_nbr((int)get_gdt(&tst));
+	lgdtr(&gdt);
+		
+	sgdtr(&test);
+
+	put_nbr(test.limit);
+	print("\n");
+	put_nbr(gdt.limit);
+
 	while (1)
 		;
 }

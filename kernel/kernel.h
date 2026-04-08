@@ -29,17 +29,17 @@ typedef struct __attribute__((packed)){
 	unsigned short	base_low;
 	unsigned char	base_middle;
 	unsigned char	access_byte;
-	unsigned char	limit_high_and_flag;
-	unsigned char	base_address_high;
-}segment_descriptor;
+	unsigned char	granularity;	// limit high and flags
+	unsigned char	base_high;
+}gdt_entry;
 
 typedef struct __attribute__((packed)){
-	unsigned short limit; // size of the segment_descriptor vector
-	unsigned int base; // pointer to whre the segment_descriptor vector start;
-} gdtr_v;
+	unsigned short limit; 			// size of the gdt_entry vector by bytes
+	unsigned int base; 				// pointer to whre the gdt_entry vector start;
+} gdt_register;
 
-void set_gdt(gdtr_v *gdt_ptr);
-gdtr_v *get_gdt();
+void lgdtr(gdt_register *gdt_ptr);
+void sgdtr(gdt_register *gdt_ptr);
 
 
 
@@ -49,10 +49,10 @@ gdtr_v *get_gdt();
 #############################################################
 # 					PRINT 									#
 #############################################################
- */
+*/
 void 	put_nbr(long n);
-void 	print(char *str, int fg, int bg);
-void 	print_erro(char *str);
-void 	print_warn(char *str);
-void 	print_info(char *str);
+void 	put_str(char *str, int fg, int bg);
+void 	print(char *str);
+void 	printe(char *str);
+void 	printw(char *str);
 #endif

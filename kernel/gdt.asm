@@ -1,14 +1,13 @@
 
-global set_gdt;
-global get_gdt;
+global lgdtr;
+global sgdtr;
 
-set_gdt:
+lgdtr:
 	mov eax, [esp + 4];
 	lgdt [eax];
 	ret 
 
-get_gdt:
+sgdtr:
 	mov eax, [esp + 4]
 	sgdt [eax];
-	mov eax, [eax];
 	ret;
