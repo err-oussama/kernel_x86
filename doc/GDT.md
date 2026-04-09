@@ -1,7 +1,33 @@
 # Global Descriptor Table 
 
+## Definition
 
-# Instruction 
+A system-wide array of 8-bytes entries called ***Segment Descriptors***, each describing a memory segment by defining its *base address* (where it start), *limit* (how large it is), privilege level (ring 0-3), and type (code, data, or system). It is shared across all processes, set up once by the OS at boot, and located by the CPY via `Global Descriptor Table Register (GDTR)`.
+The first entry is entry is always a NULL descriptor (all zeros) acting as a sefety quard. The GDT typically holds desciprtors for the kernel code segment, kernel data segment, user code segment, user dat segment, and TSS.
+Programs access these segments descriptor via a selector --  a 16-bit value containing an index into the GDT, a privilege level and a table indicator bit .
+In modern 64-bit OS, the GDT's role in address translation is obsolete since all segment base are forced to be 0 and paging handles memory management, however the GDT remains required because the CPU still depends on it for privilege level enforcement and the TSS.
+
+
+## GDT Entry format
+
++-------------------------------------------------------------------------------+
+|                               GDT/LDT entry                                   |
+|*Bytes*|*Bits* |       *Name*          |               *Role*                  |
+|0-1    | 0-15  | Segment Limit-low     | Lowset part of Segment Limit 0-15     |
+|2-3    |16-31  | Base Address-low      | Lowset part of Base Address 0-15      |
+|4      |32-39  | Base Address-Middle   | Middle part of Base Address 16-31     |
+|5      |40-47  | Access Byte           | Access info for segment               |
+|6      |48-51  | Segment Limit-high    | Highest part of Segment Limit 16-19   |
+|6      |52-55  | Flags                 | Info about Segment                    |
+|7      |56-63  | Base Address-high     | Highest part of Base Address 24-31    |
++-------------------------------------------------------------------------------+
+
+
+
+
+
+
+## Instruction 
 
 ## Global Descriptor Table Register (GDTR)
     
@@ -37,3 +63,9 @@ GDT base address
 
 sgdt [gdtr_copy]            ; dump current GDTR into gdtr_copy
 
+
+
+
+# LDT 
+
+A pre-process private version of the GDT, using the exact same 8-byte descriptor format. Unlike the GDT which is shared system-wide, each process can have its own LDT for private segment desciptors. The CPU locates it via the LDTR (Local Descriptor Table Register) register, which holds a selector pointing to the LDT's own descriptor inside the GDT. Almost no modern OS uses it as a paging has completely replaced its purpose.
