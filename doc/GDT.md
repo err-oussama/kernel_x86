@@ -20,6 +20,16 @@
 |6      |52-55  | Flags                 | Info about Segment                    |
 |7      |56-63  | Base Address-high     | Highest part of Base Address 24-31    |
 
+### Flage byte 
+
+
+|*Bits* |       *Name*          |                       *Role*                          |*Value*                                                    |
+|-------|-----------------------|-------------------------------------------------------|-----------------------------------------------------------|
+|  52   |Available for OS       |Available for OS                                       |0-1 freely set by OS                                       |
+|  53   |Long Mode              |Indicates whether this is 64-bit code segment or not   |0=32-bit segment \ 1=64-bit segment                        |
+|  54   |Default operation Size |Defines the default size of operations and addresses   |0=16-bit segment \ 1=32-bit segment                        |
+|  55   |Granularity            |Defines the unit of measurement for the segment limit  |0=Limit is in bytes (Max 1MB) \ 1=Limit is in 4KB (Max 4GB)|
+
 
 
 
