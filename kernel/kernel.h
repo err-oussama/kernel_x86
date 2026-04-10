@@ -46,15 +46,8 @@ void gdt_set_entry(
 				unsigned char access_byte, unsigned char flags
 			);
 
-/*
-#############################################################
-# 					PRINT 									#
-#############################################################
-*/
-void 	put_nbr(long n);
-void 	put_str(char *str, int fg, int bg);
-void 	print(char *str);
-void 	printe(char *str);
-void 	printw(char *str);
-void 	printb(char *ptr, unsigned int e);
+
+
+
+
 #endif

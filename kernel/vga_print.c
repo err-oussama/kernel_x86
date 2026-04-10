@@ -1,4 +1,5 @@
 #include "kernel.h"
+#include "vga_print.h"
 
 /*
 
@@ -17,12 +18,12 @@ Video Graphics Array (VGA) -- Text Mode Memory layout
 int						g_row = 0;
 int						g_col = 0;
 volatile unsigned short	*vga = (unsigned short *)0xB8000;
-void	put_char(char c, int fg, int bg, int row, int col)
+void	vg_put_char(char c, int fg, int bg, int row, int col)
 {
 	vga[row * 80 + col] = ((bg << 4 | fg) << 8) | c;
 }
 
-void	put_str(char *str, int fg, int bg)
+void	vga_print_str(char *str, int fg, int bg)
 {
 	while (*str)
 	{
@@ -44,46 +45,52 @@ void	put_str(char *str, int fg, int bg)
 }
 
 
-void printe(char *str)
+void vga_print_err(char *str)
 {
-	put_str(str, VGA_BLACK, VGA_RED);
+	vga_print_str(str, VGA_BLACK, VGA_RED);
 }
-void printw(char *str)
+void vga_print_warn(char *str)
 {
-	put_str(str, VGA_YELLOW, VGA_BLACK);
-}
-
-
-void print(char *str)
-{
-	put_str(str, VGA_WHITE, VGA_BLACK);
+	vga_print_str(str, VGA_YELLOW, VGA_BLACK);
 }
 
-void	put_nbr(long n)
+
+void vga_print(char *str)
 {
-	char	buff[30];
-	int		i = 29;
-	int		s = 0;
+	vga_print_str(str, VGA_WHITE, VGA_BLACK);
+}
+
+void vga_print_dec(long n)
+{
+	if (n < 0)
+	{	vga_print("-");
+		n = -n;
+	}	
+	vga_print_base(n, "0123456789", 10);
+	
+}
+
+void vga_print_hex(unsigned long n)
+{
+	vga_print_base(n, "0123456789ABCDEF", 16);
+}
+void	vga_print_base(unsigned long n, char *base, int base_len)
+{
+	char	buff[40];
+	int		i = 39;
 
 	buff[i] = 0;
 	if (n == 0)
-		return (put_str("0", VGA_WHITE, VGA_BLACK));
-	if (n < 0)
-	{
-		s = 1;
-		n = -n;
-	}
+		return (vga_print_str("0", VGA_WHITE, VGA_BLACK));
 	while (n > 0)
 	{
-		buff[--i] = (n % 10) + '0';
-		n /= 10;
+		buff[--i] = base[(n % base_len)];
+		n /= base_len;
 	}
-	if (s == 1)
-		buff[--i] = '-';
-	put_str(&buff[i], VGA_WHITE, VGA_BLACK);
+	vga_print_str(&buff[i], VGA_WHITE, VGA_BLACK);
 }
 
-void printb(char *ptr, unsigned int e)
+void vga_print_bin(char *ptr, unsigned int e)
 {
 	unsigned int i = -1;
 	unsigned int j;
@@ -95,13 +102,13 @@ void printb(char *ptr, unsigned int e)
 		if (!i || !(i % 4))
 		{
 			if (i)
-				print("\n");
-			put_nbr((long)ptr + i);
+				vga_print("\n");
+			vga_print_dec((long)ptr + i);
 		}
 		j = 8;
-		print(" ");
+		vga_print(" ");
 		while (j--)
-			(print((ptr[i] &  (1 << j)) ? "1" : "0"));
+			(vga_print((ptr[i] &  (1 << j)) ? "1" : "0"));
 	}
 }
 

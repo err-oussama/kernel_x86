@@ -1,13 +1,22 @@
 #include "kernel.h"
-
+#include "kprint.h"
 void	kmain(void)
 {
 	char * a  = "                                ";
-	printb(a, 10);
+	kprint_bin(a, 10);
 	
 	int b = -1;
-	print("\n");
-	printb((char *)&b, 4);
+	kprint("\n");
+	kprint_bin((char *)&b, 4);
+	kprint("\n");
+	for (int i = 0; i < 24; i++)
+	{
+		kprint_dec(i);
+		kprint(" => ");
+		kprint_hex(i);
+		kprint("\n");
+	}
+		
 
 
 	while (1)
