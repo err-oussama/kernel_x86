@@ -62,10 +62,9 @@ void print(char *str)
 void	put_nbr(long n)
 {
 	char	buff[30];
-	int		i;
-	int		s;
+	int		i = 29;
+	int		s = 0;
 
-	i = 29;
 	buff[i] = 0;
 	if (n == 0)
 		return (put_str("0", VGA_WHITE, VGA_BLACK));
@@ -86,32 +85,23 @@ void	put_nbr(long n)
 
 void printb(char *ptr, unsigned int e)
 {
-	unsigned int i;
+	unsigned int i = -1;
 	unsigned int j;
 	char *c0;
 	char *c1;
 
-	c0 = "0";	
-	c1 = "1";	
-	i = -1;
 	while (++i < e)
 	{
 		if (!i || !(i % 4))
 		{
 			if (i)
 				print("\n");
-			put_nbr((long)ptr);
-			ptr+=4;
+			put_nbr((long)ptr + i);
 		}
 		j = 8;
 		print(" ");
 		while (j--)
-		{
-			if (ptr[i] &  (1 << j))
-				print(c1);
-			else 
-				print(c0);
-		}
+			(print((ptr[i] &  (1 << j)) ? "1" : "0"));
 	}
 }
 
