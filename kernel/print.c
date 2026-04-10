@@ -26,6 +26,8 @@ void	put_str(char *str, int fg, int bg)
 {
 	while (*str)
 	{
+		if (g_row >= 25)
+			break;
 		if (*str == '\n' || g_col >= 80)
 		{
 			g_col = 0;
@@ -37,7 +39,6 @@ void	put_str(char *str, int fg, int bg)
 			}
 		}
 		vga[g_row * 80 + g_col] = ((bg << 4 | fg) << 8) | *str++;
-		//put_char(*str++, fg, bg, g_row, g_col);
 		g_col++;
 	}
 }
@@ -82,3 +83,42 @@ void	put_nbr(long n)
 		buff[--i] = '-';
 	put_str(&buff[i], VGA_WHITE, VGA_BLACK);
 }
+
+void printb(char *ptr, unsigned int e)
+{
+	unsigned int i;
+	unsigned int j;
+	char *c0;
+	char *c1;
+
+	c0 = "0";	
+	c1 = "1";	
+	i = -1;
+	while (++i < e)
+	{
+		if (!i || !(i % 4))
+		{
+			if (i)
+				print("\n");
+			put_nbr((long)ptr);
+			ptr+=4;
+		}
+		j = 8;
+		print(" ");
+		while (j--)
+		{
+			if (ptr[i] &  (1 << j))
+				print(c1);
+			else 
+				print(c0);
+		}
+	}
+}
+
+
+
+
+
+
+
+

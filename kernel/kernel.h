@@ -41,9 +41,10 @@ typedef struct __attribute__((packed)){
 void lgdtr(gdt_register *gdt_ptr);
 void sgdtr(gdt_register *gdt_ptr);
 
-
-
-
+void gdt_set_entry(
+				gdt_entry * entry, unsigned int base, unsigned int limit, 
+				unsigned char access_byte, unsigned char flags
+			);
 
 /*
 #############################################################
@@ -55,4 +56,5 @@ void 	put_str(char *str, int fg, int bg);
 void 	print(char *str);
 void 	printe(char *str);
 void 	printw(char *str);
+void 	printb(char *ptr, unsigned int e);
 #endif
