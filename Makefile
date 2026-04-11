@@ -24,6 +24,7 @@ all: $(TARGET)
 $(TARGET): $(ASM_OBJ) $(C_OBJ)
 	$(LD) $(LDFLAGS) -o $@ $^
 
+
 # Compile C sources
 kernel/%.o: kernel/%.c
 	$(CC) $(CFLAGS) $< -o $@
@@ -38,12 +39,13 @@ boot/%.o: boot/%.asm
 
 # Running
 run: $(TARGET) 
-	qemu-system-x86_64 -kernel kernel.bin
+	qemu-system-x86_64 -kernel $(TARGET)
 
 # Clean
 clean:
-	rm -f $(ASM_OBJ) $(C_OBJ) $(TARGET)
-
+	rm -f $(ASM_OBJ) $(C_OBJ) 
+fclean: clean
+	rm -f $(TARGET)
 
 
 
