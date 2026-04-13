@@ -13,4 +13,5 @@ void kprint_byt(unsigned char byte);
 
 void kmemory_dump_bin(void *ptr, unsigned long size);
 void kmemory_dump_hex(void *ptr, unsigned long size);
+
 #endif
