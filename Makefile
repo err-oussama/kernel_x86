@@ -12,8 +12,12 @@ LDFLAGS := -m elf_i386 -T linker.ld
 ASM_SRC := $(wildcard boot/*.asm) $(wildcard kernel/*.asm)
 ASM_OBJ := $(ASM_SRC:.asm=.o)
 
+
+
 C_SRC   := $(wildcard kernel/*.c)
 C_OBJ   := $(C_SRC:.c=.o)
+
+INCL :=	$(wildcard kernel/*.h)
 
 TARGET  := kernel.bin
 
