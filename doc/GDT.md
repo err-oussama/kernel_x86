@@ -72,4 +72,29 @@ sgdt [gdtr_copy]            ; dump current GDTR into gdtr_copy
 
 ## GDT entry 
 
+### 0 NULL descriptor (8byte)
+
+
+
+### 1 Kernel Code descriptor (8byte)
+    used by CS (ring 0 execution)
+
+
+### 2 Kernel Data descriptor (8byte)
+    used by SS/DS (ring 0 stack + data)
+
+
+### 3 User Data descriptor (8byte)
+    used by SS/DS (ring 3 stack + data)
+
+
+### 4 User Code descriptor (8byte) 
+    used by CS (ring 3 execution)
+
+
+### TSS descriptor (16byte) 
+    used by TR (Task Register)
+
+
+
 
