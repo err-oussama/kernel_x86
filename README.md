@@ -53,7 +53,7 @@ on x86.
 
 ### CPU Control
 
-* [ ] Global Descriptor Table (GDT)
+* [x] Global Descriptor Table (GDT)
 * [ ] Interrupt Descriptor Table (IDT)
 
 ### Interrupt System
