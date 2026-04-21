@@ -48,9 +48,9 @@
 ## Bit Explantion
 ### Grows-up vs Grows-down bit 
 
-To master the "Grows Down" vs "Grows Up" logic, you have to stop thinking about where the memory is and start thinking  about where the **Forbidden Zone** is
+The difference between *Expand-Up* and *Expand-Down* segment is not about physical layout of memory. It is entirely about where the CPU place the ***Forbidden Zone***.
 
-In both case the CPU calculates the final address the same way: ***Base + Offset***, The direction bit simplly tells the CPU which offsets are *legal*.
+Regardless of the direction flag, the CPU always calculate the target physical address exactly the same way: **Base** + **Offset**. The direction bit does not alter this math; it strictly dictates which of those offsets are legal to access and which will trigger a fault.
 
 |   Mode        | Direction Bit |   The Hardware Rule    |   Valid Range  |
 |---------------|---------------|------------------------|----------------|
@@ -59,7 +59,7 @@ In both case the CPU calculates the final address the same way: ***Base + Offset
 
 ### Conforming vs Non-Conforming
 
-- **Non-Conforming**(0): This is "Strict Mode" where your current Privilege Level must exactly match the segment's Ring 
+- **Non-Conforming**(0): This is "Strict Mode" where the current Privilege Level must exactly match the segment's Ring 
 - If a Ring 3 program tries to jump into a Ring 0 Non-Conforming segment, the CPU triggers a fault to protect the kernel 
 
 - **Conforming**(1): This is "Flexible Mode" that allows lower-privilege programs to execute higher privilge code.
