@@ -83,7 +83,46 @@ The **Interrupt Description Table (IDT)** -- also called the *Interrupt Vector T
 
 ***Physical address = segment * 16 + offset***
 
+### Gate Description - Protected Mode (32-bit) 
+
+|*Bytes*|   *Name*          | *Role*                                                                       |   
+|-------|-------------------|------------------------------------------------------------------------------|
+|0-1    |Offset Low         |Lower 16 bits of the ISR address                                              |
+|2-3    |Selector           |Segment selector that indexes into the GDT to find code segment containing ISR|
+|4      |Reserved/Zero      |Always set to 0, reserved for future usage, unused                            |
+|5      |Type & Attributes  |Gate type, Descriptor privilege(DPL), present bit                             |
+|6-7    |Offset High        |Upper 16 bits of the ISR address                                              |
 
 
+### Interrupt Gate/ IDT entry - Long Mode (64-bit)
 
+|*Bytes*|       *Name*        |                              *Role*                                          |
+|-------|---------------------|------------------------------------------------------------------------------|
+|0-1    |Low offset           |Lower 16 bits of the ISR address                                              |
+|2-3    |Selector             |Segment selector that indexes into the GDT to find code segment containing ISR|
+|4      |Interrupt Stack Table|Index into the ISR to select which stack to use when the interrupt fires      |
+|5      |Type & Attributes    |Gate Type, Descriptor Privilege Level(DPL), present bit                       |
+|6-7    |Middle Offset        |Middle 16 bits of the ISR address (bits 16-31)                                |
+|8-11   |High offset          |Upper 32 bits of the ISR address (bits 32-63)                                 |
+|12-15  |Reserved/Zero        |Reserved for future use, must be zero                                         |
+
+
+#### Selector 
+
+|*Bits* |           *Name*            |                         *Role*                          |*Bit Value*|
+|-------|-----------------------------|---------------------------------------------------------|-----------|
+|0-1    |Request Privilege Level (RPL)|Defines the privilege of the requested segment           | Ring 0-3  |
+|2      |Table indecator (TI)         |Indecates which table to lookup the segment descriptor in|0=GDT/1=LDI|
+|3-15   |Index                        |Index of the sgment descriptor inside the GDT/LDT        |Index value|
+
+
+#### Type & Attribute 
+
+
+|*Bits* |           *Name*            |                         *Role*                                |                     *Bit Value*                       |
+|-------|-----------------------------|---------------------------------------------------------------|-------------------------------------------------------|
+|0-3    |Type                         |Define the type of gate                                        |0-16                                                   |
+|4      |System Bit (S)               |Identifies system structures                                   |0=System Descriptor/1=(code,data) segment              |
+|5-6    |Description Privilege Level  |Define the minimum privilege level required to access this gate|Rin 0-3                                                |
+|7      |Present                      |Marks whether this descriptor is valid and active              |1=Active/0=Inactive, raise General Protection Fault(GP)|
 
