@@ -4,4 +4,6 @@
 #include "kprint.h"
 #include "vga_print.h"
 
+int get_cs();
+int is64bit();
 #endif

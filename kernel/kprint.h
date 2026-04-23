@@ -3,6 +3,10 @@
 
 #include "vga_print.h"
 
+#define uint8 unsigned char
+#define uint32 unsigned int
+#define uint16 unsigned short
+
 void kprint(char *str);
 void kprint_wrn(char *str);
 void kprint_err(char *str);

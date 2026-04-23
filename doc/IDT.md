@@ -125,4 +125,3 @@ The **Interrupt Description Table (IDT)** -- also called the *Interrupt Vector T
 |4      |System Bit (S)               |Identifies system structures                                   |0=System Descriptor/1=(code,data) segment              |
 |5-6    |Description Privilege Level  |Define the minimum privilege level required to access this gate|Rin 0-3                                                |
 |7      |Present                      |Marks whether this descriptor is valid and active              |1=Active/0=Inactive, raise General Protection Fault(GP)|
-
