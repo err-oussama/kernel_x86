@@ -1,5 +1,7 @@
 global lidtr
 global sidtr
+global call_int
+
 
 section .text
 
@@ -13,3 +15,11 @@ sidtr:
 	mov eax, [ebp + 4]
 	sidt [eax]
 	ret
+
+
+
+call_isr:
+	pusha
+	call [exp - 4]
+	popa
+	iret
