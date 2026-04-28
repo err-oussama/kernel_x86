@@ -33,7 +33,7 @@ void kmain(void) {
   idtr idt_reg;
   idt_reg.base = (uint32)gate_descriptors;
   idt_reg.limit = sizeof(gate_descriptor) * 256 - 1;
-  set_idt_entry(&gate_descriptors[0], (uint32)isr_dived_error_handler, 1 << 3,
+  set_idt_entry(&gate_descriptors[0], (uint32)isr_divide_error_handler, 1 << 3,
                 IDT_PRESENT | IDT_DPL0 | IDT_S_BIT0 |
                     IDT_TYPE_32BIT_INTERRUPT_GATE);
   lidtr(&idt_reg);
