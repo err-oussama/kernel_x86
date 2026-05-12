@@ -154,3 +154,163 @@ covers          →   every byte within the 4KB frame
 The **TLB** is a small hardware cache inside the CPU that stores recent virtual to physical address translations. Its entries purpose is to avoid repeating the full page table walk every single time the CPU access memory.
 
 
+## Virtual Address Translation Steps
+
+The CPU executes an instruction that references a memory address. This address is a virual address  — it means nothing until translated.
+
+
+```
+mov eax, [0x00401ABC]     ← 0x00401ABC is virtual 
+```
+
+### Step 1 — check TLB 
+
+the MU checks if this virtual address was recently translated and is cached in the TLB 
+
+```
+TLB hit     → physical address found, skip to step 5
+TLP miss    → must walk page tables 
+```
+
+### Step 2 — Split virtual address into 3 parts
+
+```
+0x00401ABC = 0000 0000   01 | 00   0000   0001 | 1010   1011 1100
+
+
+bits 31-22  →   0x001   →   page directory index 
+bits 21-12  →   0x001   →   page table index 
+bits 12-0   →   0xABC   →   offset   
+```
+### Step 3 — Read Page Directory 
+
+```
+CR3     →   physical address of page directory
+page_directory[0x001]   →   read PDE  
+check P bit:
+    0   →   #PF fires 
+    1   →   continue  
+
+PDE gives physical address of page table 
+```
+
+### Step 4 — Read Page Table 
+
+```
+page_table[0x001]   →   read PTE 
+check p bit:
+    0 → #PF fires 
+    1 → continue
+PTE gives physical frame address
+
+```
+### Step 5 — Check U/S R/W 
+```
+check U/S bit → privilege violation → #PF fires  
+check R/W bit → write to read-only → #PF fires  
+
+```
+
+### Step 6 — Update A and D bits 
+```
+any access  → MMU sets A bit in PTE  
+write       → MMU sets D bit in PTE  
+```
+
+### Step 7 — Cache in TLB 
+```
+MMU stores virtual  → physcial mapping in TLB 
+next access to same page skips steps 3-6 entirely
+```
+
+
+### Step 8 — Combine Frame Address and Offset 
+
+```
+frame address       =   PTE bits 31-12      =   0x300000
+offset              =   bits 11-0           =   0xABC 
+physical address    =   0x300000 + 0xABC    =   0x300ABC   
+```
+### Step 9 — Access Physical RAM 
+
+```
+CPU puts 0x300ABC on address bus 
+RAM responds with data 
+CPU gets its data
+```
+
+
+### Full Picture 
+
+```
+                    Virtual Address     0x00401ABC 
+                                ↓
+                            TLB check
+                                ↓ miss
+            splite  → PD=0x001 PT=0x001 Offset=0xABC   
+                                ↓
+        CR3  →  page_directory[0x001]   →  page table address
+                                ↓
+            page_table[0x001] → frame address 0x300000
+                                ↓
+                    set A bit, set D bit if write
+                                ↓
+                           cache in TLB 
+                                ↓
+               0x300000 + 0xABC = physical 0x300ABC 
+                                ↓
+                            access RAM
+
+```
+
+
+## CR3 
+
+**CR3** is a special CPU register that **holds the physical address of the page directory**. It is the starting point of every address translation — when the MMU needs to translate a virtual address it **always starts by reading CR3 to find the page directory**. 
+
+
+```
+bits 31-12  →   physical address of page directory 
+bit 4       →   PCD page cache diable for page directory itself
+bit 3       →   PWT write through for page directory itself 
+bits 0-2    →   ignored
+```
+
+### Key properties
+```
+privileged          → only ring 0 can read or write it
+physical only       →   always holds a physical address, never virtual even after paging is enabled
+page aligned        →   lower 12 bits always zero
+one per process     →   each process has its own page directory 
+                                context switch means loading a new CR3 
+TLB flush           →   reloading CR3 flushes the entire TLB automatically
+
+```
+
+### How It works
+
+
+**CR3** can only be accessed through the `mov` instruction — no arithmetic or logical operations are allowed directly on it. Any modification requires reading it into a general purpose register first, modifiying that register, then writing back.
+```
+read        →   mov eax, cr3 
+write       →   mov cr3, eax 
+```
+
+**In one line**: CR3 is the register that connects the CPU to the page tables — it tells the MMU where the page directory lives, and every virtual address translation starts from it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
