@@ -62,7 +62,7 @@ on x86.
 
 ### Memory Management
 * [x] Physical memory map (parse multiboot)
-* [ ] Physical frame allocator
+* [x] Physical frame allocator
 * [ ] Paging (virtual memory)
 * [ ] Kernel heap (kmalloc/kfree)
 * [ ] Address space control
