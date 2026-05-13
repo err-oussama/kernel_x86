@@ -299,18 +299,17 @@ write       →   mov cr3, eax
 **In one line**: CR3 is the register that connects the CPU to the page tables — it tells the MMU where the page directory lives, and every virtual address translation starts from it.
 
 
+## CR0 
+
+**CR0** is a privileged CPU register that controls the fundamental operating modes of the CPU, Unlike CR3 which holds an address, **CR0 is a collection of feature flags** — each bit enables or disables a core CPU capability.
+
+### The Bits that matters for now 
+
+```
+bit 0   PE  →   Protection Enable   → switches CPU from real mode to protected mode
+
+bit 16  WP  →   Write Protect       → prevents kernel from writing to read only pages
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+bit 31  PG  →   Paging              → enables virtual memory translation via page tables
+```
