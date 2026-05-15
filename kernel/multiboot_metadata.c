@@ -4,9 +4,11 @@ void show_multiboot_data(multiboot_info *boot_info) {
   kprint("\n----MULTIBOOT METADATA----\n");
   uint8 *ptr = (uint8 *)boot_info->mmap_addr;
   uint8 *end = ptr + boot_info->mmap_length;
+
+  mmap_entry *entry = (mmap_entry *)ptr;
   while (ptr < end) {
 
-    mmap_entry *entry = (mmap_entry *)ptr;
+    entry = (mmap_entry *)ptr;
     kprint("type: ");
     kprint_hex(entry->type);
     kprint(" | address: ");

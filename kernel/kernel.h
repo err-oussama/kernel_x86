@@ -9,6 +9,11 @@
 #include "vga_print.h"
 #include "virtual_memory.h"
 
+extern uint32 multiboot_header;
+extern uint32 kernel_text;
+extern uint32 kernel_rodata;
+extern uint32 kernel_data;
+extern uint32 kernel_bss;
 extern uint32 kernel_end;
 
 int get_cs();

@@ -1,7 +1,6 @@
 #ifndef MULTIBOOT_INFO_H
 #define MULTIBOOT_INFO_H
 
-#include "kernel.h"
 #include "pmm.h"
 #include "type.h"
 
