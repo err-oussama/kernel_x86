@@ -61,9 +61,7 @@ reserved ACPI
 ### Part V 0xFFFC0000
 BIOS ROM mapped
 
-size: 256KB
-
-
+does not exist in booting time only after BIOS setup, before that this is direct to the BIOS chip ROM.
 
 
 
